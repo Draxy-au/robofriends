@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 import Scroll from "../components/Scroll";
+import ErrorBoundary from "../components/ErrorBoundry";
 
 import "../styles/App.css";
 
@@ -29,16 +30,18 @@ class App extends Component {
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
-    // we were checking if === 0. 0 = false, so check if not false
+    // we were checking robots length === 0. 0 = false, so check if not false
     // then convert the if to a turnery
-    return !robots.length ? 
+    return !robots.length ? (
       <h1>Loading...</h1>
-    : (
+    ) : (
       <div className="tc">
         <h1 className="f1">RoboFriends</h1>
         <SearchBox searchChange={this.onSearchChange} />
         <Scroll>
-          <CardList robots={filteredRobots} />
+          <ErrorBoundary>
+            <CardList robots={filteredRobots} />
+          </ErrorBoundary>
         </Scroll>
       </div>
     );
